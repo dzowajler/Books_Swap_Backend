@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DbConnection
 {
-    public class BooksSwapContext : DbContext
+    public class BooksSwapDbContext : DbContext
     {
         public DbSet<BookCondition> BookConditions { get; set; }
         public DbSet<BookGenre> BookGenres { get; set; }
@@ -18,7 +18,7 @@ namespace DbConnection
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public BooksSwapContext() : base()
+        public BooksSwapDbContext() : base()
         {
 
         }

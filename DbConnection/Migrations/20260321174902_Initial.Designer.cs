@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DbConnection.Migrations
 {
-    [DbContext(typeof(BooksSwapContext))]
+    [DbContext(typeof(BooksSwapDbContext))]
     [Migration("20260321174902_Initial")]
     partial class Initial
     {
