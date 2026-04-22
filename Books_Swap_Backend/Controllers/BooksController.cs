@@ -1,6 +1,10 @@
+using DbAccess.Queries;
+using DbAccess.QueryHandlers;
 using DbConnection;
 using DbConnection.DbModels;
 using Microsoft.AspNetCore.Mvc;
+using ResponseModels.ViewModels;
+using SearchService;
 
 namespace Books_Swap_Backend.Controllers
 {
@@ -9,43 +13,30 @@ namespace Books_Swap_Backend.Controllers
     public class BooksController : ControllerBase
     {
         private readonly ILogger<BooksController> _logger;
+        private readonly IBookQueryService _bookQueryService; 
 
         public BooksController(ILogger<BooksController> logger)
         {
             _logger = logger;
+            _bookQueryService = new BookQueryService();
         }
 
         [HttpGet]
-        public IEnumerable<Book> GetAllBooks()
+        public async Task<IEnumerable<BookViewModel>> GetAllBooks()
         {
-            var items = new List<Book>();
+            var result = await _bookQueryService.SearchForBooksAsync(null, null);
 
-            using (var dbContext = new BooksSwapContext())
-            {
-                foreach (var book in dbContext.Books)
-                {
-                    items.Add(book);
-                }
-            }
-
-            return items;
+            return result;
         }
 
         [HttpGet("/books")]
-        public IEnumerable<Book> SearchForBooksByTitle([FromQuery] string title)
+        public async Task<IEnumerable<BookViewModel>> SearchForBooksByTitleAsync([FromQuery] string title)
         {
-            var items = new List<Book>();
+            var result = await _bookQueryService.SearchForBooksAsync(title, null);
 
-            using (var dbContext = new BooksSwapContext())
-            {
-                items = dbContext.Books
-                    .Where(
-                        b => b.Title.ToLower().Contains(title)
-                        )
-                    .ToList();
-            }
-
-            return items;
+            return result;
+            //return Results.Ok(items);
+            //stworzyæ dodatkow¹ klasê z odpowiedzi¹ HTTP implementuj¹c¹ IResult
         }
     }
 }
