@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace SearchService
 {
-    public interface IBookQueryService
+    public interface IBooksSearchService
     {
-       Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title, string? author);
+       Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title, string? author, CancellationToken ct);
     }
 }

@@ -11,19 +11,21 @@ using System.Threading.Tasks;
 
 namespace SearchService
 {
-    public class BookQueryService : IBookQueryService
+    public class BooksSearchService : IBooksSearchService
     {
         private IBookQueryHandler _bookQueryHandler;
         private IDatabaseToViewModelMappers _dbToViewModelMappers;
-        public BookQueryService()
+        public BooksSearchService()
         {
             _bookQueryHandler = new BookQueryHandler();
             _dbToViewModelMappers = new DatabaseToViewModelMappers();
         }
 
         public async Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title,
-            string? author)
+            string? author, CancellationToken ct)
         {
+            ct.ThrowIfCancellationRequested();
+
             var bookQuery = new GetBookQuery() 
             {
                 Title = title,
@@ -35,7 +37,7 @@ namespace SearchService
             if (result == null) {
                 return Enumerable.Empty<BookViewModel>();
             }
-
+            
             var vmResult = new List<BookViewModel>();
 
             foreach(var item in result)
