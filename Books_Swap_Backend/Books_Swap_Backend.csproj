@@ -18,7 +18,6 @@
     <ProjectReference Include="..\DbConnection\DbConnection.csproj" />
     <ProjectReference Include="..\SearchService\SearchService.csproj" />
     <ProjectReference Include="..\TokenProvider\AuthenticationService.csproj" />
-    <ProjectReference Include="..\TokenProvider\AuthService.csproj" />
   </ItemGroup>
 
 </Project>
