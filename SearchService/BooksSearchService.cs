@@ -32,19 +32,7 @@ namespace SearchService
                 Author = author
             };
 
-            var result = await _bookQueryHandler.HandleAsync(bookQuery);
-
-            if (result == null) {
-                return Enumerable.Empty<BookViewModel>();
-            }
-            
-            var vmResult = new List<BookViewModel>();
-
-            foreach(var item in result)
-            {
-                vmResult.Add(_dbToViewModelMappers.ToViewModel(item));
-            }
-            return vmResult;
+            return await _bookQueryHandler.HandleAsync(bookQuery);
 
             //if result == null return NOT FOUND
             // if result == cos tam return 200 ok
