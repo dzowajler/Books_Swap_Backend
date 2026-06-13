@@ -2,8 +2,11 @@
 using DbConnection;
 using DbConnection.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using ResponseModels.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,17 +26,53 @@ namespace DbAccess.QueryHandlers
         }
 
         //rozważyć wszystkie edge casy
-        public async Task<IEnumerable<Book>> HandleAsync(GetBookQuery query)
+        public async Task<IEnumerable<BookViewModel>> HandleAsync(GetBookQuery query)
         {
-            if (query == null) {
+            if (query == null)
                 throw new ArgumentNullException("query");
-            }
 
-            var result = await CreateBooksSearchQuery(query).ToListAsync();
+            var dbResult = await CreateBooksSearchQuery(query).ToListAsync();
 
-            return result;
+            if (dbResult.IsNullOrEmpty<Book>())
+                return Enumerable.Empty<BookViewModel>();
+
+            var booksAndGenreDict = GroupByBooksByGenreId(dbResult);
+
+            return await CreteBookViewModelFromBooksAndGenresAsync(booksAndGenreDict);
         }
 
+        private async Task<IEnumerable<BookViewModel>> CreteBookViewModelFromBooksAndGenresAsync(
+            Dictionary<int, List<Book>> booksAndGenreDict)
+        {
+            var viewModelResult = new List<BookViewModel>();
+
+            foreach (var bookAndGenre in booksAndGenreDict)
+            {
+                var genreDbText = await _booksSwapDbContext.BookGenres
+                    .Where(g => g.BookGenreId == bookAndGenre.Key)
+                    .Select(x => x.Genre).SingleAsync();
+
+                //dodać osobno metode do tworzenia view Modeli
+                foreach (var book in bookAndGenre.Value)
+                {
+                    viewModelResult.Add(new BookViewModel
+                    {
+                        Author = book.Author,
+                        Genre = genreDbText,
+                        Description = book.Description,
+                        Price = book.Price,
+                        Title = book.Title,
+                        Id = book.BookId
+                    });
+                }
+            }
+
+            return viewModelResult;
+        }
+
+        private Dictionary<int, List<Book>> GroupByBooksByGenreId(IEnumerable<Book> dbResult) =>
+           dbResult.GroupBy(b => b.BookGenreId).ToDictionary(g => g.Key, g => g.ToList());
+       
         private IQueryable<Book> CreateBooksSearchQuery(GetBookQuery bookQuery)
         {
             var booksTable = _booksSwapDbContext.Books;
