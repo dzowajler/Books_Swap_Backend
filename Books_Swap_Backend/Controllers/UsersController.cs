@@ -25,7 +25,7 @@ namespace Books_Swap_Backend.Controllers
         }
 
         [HttpPost("/register")]
-        public async Task<bool> Register([FromBody] CreateUserCommand userCommand)
+        public async Task<bool> RegisterAsync([FromBody] CreateUserCommand userCommand)
         {
             var result = await _userCommandHandler.HandleAsync(userCommand);
 
