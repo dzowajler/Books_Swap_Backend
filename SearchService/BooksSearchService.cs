@@ -14,11 +14,10 @@ namespace SearchService
     public class BooksSearchService : IBooksSearchService
     {
         private IBookQueryHandler _bookQueryHandler;
-        private IDatabaseToViewModelMappers _dbToViewModelMappers;
+
         public BooksSearchService()
         {
             _bookQueryHandler = new BookQueryHandler();
-            _dbToViewModelMappers = new DatabaseToViewModelMappers();
         }
 
         public async Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title,
