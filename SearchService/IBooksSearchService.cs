@@ -9,6 +9,6 @@ namespace SearchService
 {
     public interface IBooksSearchService
     {
-       Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title, string? author, CancellationToken ct);
+       Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title, string? author, int? id, CancellationToken ct);
     }
 }

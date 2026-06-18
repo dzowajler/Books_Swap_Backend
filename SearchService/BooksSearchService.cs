@@ -22,12 +22,13 @@ namespace SearchService
         }
 
         public async Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title,
-            string? author, CancellationToken ct)
+            string? author, int? id, CancellationToken ct)
         {
             ct.ThrowIfCancellationRequested();
 
             var bookQuery = new GetBookQuery() 
             {
+                BookId = id,
                 Title = title,
                 Author = author
             };
