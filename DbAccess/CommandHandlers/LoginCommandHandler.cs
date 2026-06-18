@@ -24,7 +24,7 @@ namespace DbAccess.CommandHandlers
                 && u.PasswordHash == userCommand.Password).ToList();
 
             if (result.Count == 1)
-                return result.First();
+                return result.Single();
             else 
                 return null;
         }
