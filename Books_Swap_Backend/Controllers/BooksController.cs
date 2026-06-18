@@ -2,9 +2,11 @@ using DbAccess.Queries;
 using DbAccess.QueryHandlers;
 using DbConnection;
 using DbConnection.DbModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ResponseModels.ViewModels;
 using SearchService;
+using System.Threading.Tasks;
 
 namespace Books_Swap_Backend.Controllers
 {
@@ -21,13 +23,13 @@ namespace Books_Swap_Backend.Controllers
             _bookQueryService = new BooksSearchService();
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<BookViewModel>> GetAllBooks(CancellationToken cancellationToken)
+        [HttpGet("/books")]
+        public async Task<IEnumerable<BookViewModel>> GetAllBooksAsync(CancellationToken cancellationToken)
         {
 
             try
             {
-                var result = await _bookQueryService.SearchForBooksAsync(null, null, cancellationToken);
+                var result = await _bookQueryService.SearchForBooksAsync(null, null, null, cancellationToken);
 
                 return result;
             }
@@ -41,10 +43,19 @@ namespace Books_Swap_Backend.Controllers
             }
         }
 
-        [HttpGet("/books")]
+        [Authorize]
+        [HttpGet("/books/{id:int:min(1)}")]
+        public async Task<IEnumerable<BookViewModel>> GetBookById(int id)
+        {
+            var result = await _bookQueryService.SearchForBooksAsync(null, null, id, new CancellationToken());
+            
+            return result;
+        }
+
+       [HttpGet("/books/search")]
         public async Task<IEnumerable<BookViewModel>> SearchForBooksByTitleAsync([FromQuery] string title)
         {
-            var result = await _bookQueryService.SearchForBooksAsync(title, null, new CancellationToken());
+            var result = await _bookQueryService.SearchForBooksAsync(title, null, null, new CancellationToken());
 
             return result;
             //return Results.Ok(items);
