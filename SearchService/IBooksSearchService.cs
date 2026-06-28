@@ -1,4 +1,5 @@
-﻿using ResponseModels.ViewModels;
+﻿using Models.ApiResponseModels;
+using ResponseModels.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace SearchService
 {
     public interface IBooksSearchService
     {
-       Task<IEnumerable<BookViewModel>> SearchForBooksAsync(string? title, string? author, int? id, CancellationToken ct);
+       Task<ApiResponse> SearchForBooksAsync(string? title, string? author, int? id, CancellationToken ct);
     }
 }
