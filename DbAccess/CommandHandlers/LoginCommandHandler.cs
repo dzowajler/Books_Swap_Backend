@@ -1,6 +1,7 @@
 ﻿using DbAccess.Commands;
 using DbConnection;
 using DbConnection.DbModels;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,15 @@ namespace DbAccess.CommandHandlers
 
         public async Task<User> HandleAsync(LoginUserCommand userCommand)
         {
-            var result = _booksSwapDbContext.Users.Where(u => u.UserName == userCommand.EmailOrUsername
-                && u.PasswordHash == userCommand.Password).ToList();
+            var result = _booksSwapDbContext.Users.Where(u => 
+                u.UserName == userCommand.EmailOrUsername && 
+                u.PasswordHash == userCommand.Password)
+                    .ToList();
 
-            if (result.Count == 1)
-                return result.Single();
-            else 
+            if (result.IsNullOrEmpty())
                 return null;
+
+            return result.Single();
         }
     }
 }
