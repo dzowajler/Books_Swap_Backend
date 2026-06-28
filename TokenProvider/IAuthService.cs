@@ -1,4 +1,5 @@
 ﻿using DbAccess.Commands;
+using Models.ApiResponseModels;
 using Models.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace AuthService
 {
     public interface IAuthService
     {
-        Task<TokenResponse> LogInAsync(LoginUserCommand userCommand);
+        Task<ApiResponse> LogInAsync(LoginUserCommand userCommand);
     }
 }
