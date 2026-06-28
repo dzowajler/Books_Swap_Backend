@@ -4,6 +4,7 @@ using DbConnection;
 using DbConnection.DbModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiResponseModels;
 using ResponseModels.ViewModels;
 using SearchService;
 using System.Threading.Tasks;
@@ -14,52 +15,30 @@ namespace Books_Swap_Backend.Controllers
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
-        private readonly ILogger<BooksController> _logger;
         private readonly IBooksSearchService _bookQueryService; 
 
         public BooksController(ILogger<BooksController> logger)
         {
-            _logger = logger;
             _bookQueryService = new BooksSearchService();
         }
 
         [HttpGet("/books")]
-        public async Task<IEnumerable<BookViewModel>> GetAllBooksAsync(CancellationToken cancellationToken)
+        public async Task<ApiResponse> GetAllBooksAsync(CancellationToken cancellationToken)
         {
-
-            try
-            {
-                var result = await _bookQueryService.SearchForBooksAsync(null, null, null, cancellationToken);
-
-                return result;
-            }
-            catch (OperationCanceledException ex) when (HttpContext.RequestAborted.IsCancellationRequested)
-            {
-                throw;
-            }
-            catch (OperationCanceledException ex)
-            {
-                throw;
-            }
+            return await _bookQueryService.SearchForBooksAsync(null, null, null, cancellationToken);
         }
 
         [Authorize]
         [HttpGet("/books/{id:int:min(1)}")]
-        public async Task<IEnumerable<BookViewModel>> GetBookById(int id)
+        public async Task<ApiResponse> GetBookByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var result = await _bookQueryService.SearchForBooksAsync(null, null, id, new CancellationToken());
-            
-            return result;
+            return await _bookQueryService.SearchForBooksAsync(null, null, id, cancellationToken);
         }
 
-       [HttpGet("/books/search")]
-        public async Task<IEnumerable<BookViewModel>> SearchForBooksByTitleAsync([FromQuery] string title)
+        [HttpGet("/books/search")]
+        public async Task<ApiResponse> SearchForBooksByTitleAsync([FromQuery] string title, CancellationToken cancellationToken)
         {
-            var result = await _bookQueryService.SearchForBooksAsync(title, null, null, new CancellationToken());
-
-            return result;
-            //return Results.Ok(items);
-            //stworzyæ dodatkow¹ klasê z odpowiedzi¹ HTTP implementuj¹c¹ IResult
+            return await _bookQueryService.SearchForBooksAsync(title, null, null, cancellationToken);
         }
     }
 }

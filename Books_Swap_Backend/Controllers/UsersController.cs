@@ -2,6 +2,7 @@
 using DbAccess.CommandHandlers;
 using DbAccess.Commands;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiResponseModels;
 using Models.Models;
 using TokenProvider;
 
@@ -27,15 +28,11 @@ namespace Books_Swap_Backend.Controllers
         [HttpPost("/register")]
         public async Task<bool> RegisterAsync([FromBody] CreateUserCommand userCommand)
         {
-            var result = await _userCommandHandler.HandleAsync(userCommand);
-
-            return result;
-            //return Results.Ok(items);
-            //stworzyć dodatkową klasę z odpowiedzią HTTP implementującą IResult
+            return await _userCommandHandler.HandleAsync(userCommand);
         }
 
         [HttpPost("/login")]
-        public async Task<TokenResponse> LoginAsync([FromBody] LoginUserCommand userCommand)
+        public async Task<ApiResponse> LoginAsync([FromBody] LoginUserCommand userCommand)
         {
             return await _authService.LogInAsync(userCommand);
         }
