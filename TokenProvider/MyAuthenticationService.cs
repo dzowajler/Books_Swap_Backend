@@ -5,6 +5,7 @@ using DbConnection.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Models.ApiResponseModels;
 using Models.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -26,15 +27,18 @@ namespace TokenProvider
             _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }
 
-        public async Task<TokenResponse> LogInAsync(LoginUserCommand userCommand)
+        public async Task<ApiResponse> LogInAsync(LoginUserCommand userCommand)
         {
             var user = await _loginCommandHandler.HandleAsync(userCommand);
-            var tokenResponse = new TokenResponse();
 
             if (user != null)
+            {
+                var tokenResponse = new TokenResponse();
                 tokenResponse.AccessToken = GenerateAccessToken(user);
+                return new ApiSucces() { Code = "200", ResponseData = tokenResponse, Message = "Token sucessfully generated" };
+            }
 
-            return tokenResponse;
+            return new ApiError() { Code = "500", Message = "login unsuccesfull" };
         }
 
         private string GenerateAccessToken(User user)
