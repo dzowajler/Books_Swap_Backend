@@ -2,7 +2,7 @@
 using DbAccess.QueryHandlers;
 using Models.ApiResponseModels;
 
-namespace SearchService
+namespace SearchService.BooksSearches
 {
     public class BooksSearchService : IBooksSearchService
     {

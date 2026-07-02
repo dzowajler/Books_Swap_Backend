@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SearchService
+namespace SearchService.BooksSearches
 {
     public interface IBooksSearchService
     {
