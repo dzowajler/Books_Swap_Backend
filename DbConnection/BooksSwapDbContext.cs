@@ -17,6 +17,7 @@ namespace DbConnection
 
         public DbSet<Book> Books { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<BookOwners> BookOwners { get; set; }
 
         public BooksSwapDbContext() : base()
         {
