@@ -10,11 +10,11 @@ namespace Books_Swap_Backend.Controllers
     [ApiController]
     public class BooksOwnedByUserController : ControllerBase
     {
-        private IBooksOwnedByUserSearch _booksOwnedByUserSearch { get; set; }
+        private IBooksOwnedByUserSearchService _booksOwnedByUserSearch { get; set; }
 
         public BooksOwnedByUserController()
         {
-            _booksOwnedByUserSearch = new BooksOwnedByUserSearch();
+            _booksOwnedByUserSearch = new BooksOwnedByUserSearchService();
         }
 
         [HttpGet("/users/{userId:int:min(1)}/books/{bookId:int:min(1)}")]
