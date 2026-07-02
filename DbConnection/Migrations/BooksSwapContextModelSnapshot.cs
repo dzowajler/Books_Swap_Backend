@@ -89,6 +89,29 @@ namespace DbConnection.Migrations
                     b.ToTable("BookGenres");
                 });
 
+            modelBuilder.Entity("DbConnection.DbModels.BookOwners", b =>
+                {
+                    b.Property<int>("UsersBooksId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UsersBooksId"));
+
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UsersBooksId");
+
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BookOwners");
+                });
+
             modelBuilder.Entity("DbConnection.DbModels.BookStatus", b =>
                 {
                     b.Property<int>("BookStatusId")
@@ -148,6 +171,25 @@ namespace DbConnection.Migrations
                         .IsRequired();
 
                     b.Navigation("BookGenre");
+                });
+
+            modelBuilder.Entity("DbConnection.DbModels.BookOwners", b =>
+                {
+                    b.HasOne("DbConnection.DbModels.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DbConnection.DbModels.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
