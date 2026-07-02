@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiResponseModels;
 using ResponseModels.ViewModels;
-using SearchService;
+using SearchService.BooksSearches;
 using System.Threading.Tasks;
 
 namespace Books_Swap_Backend.Controllers
@@ -24,6 +24,7 @@ namespace Books_Swap_Backend.Controllers
 
         [HttpGet("/books")]
         public async Task<ApiResponse> GetAllBooksAsync(CancellationToken cancellationToken)
+        
         {
             return await _bookQueryService.SearchForBooksAsync(null, null, null, cancellationToken);
         }
