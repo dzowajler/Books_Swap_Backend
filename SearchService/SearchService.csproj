@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DbAccess\DbAccess.csproj" />
+    <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\ResponseModels\Models.csproj" />
   </ItemGroup>
 
