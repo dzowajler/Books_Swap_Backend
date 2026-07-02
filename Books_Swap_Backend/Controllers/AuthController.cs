@@ -11,14 +11,14 @@ namespace Books_Swap_Backend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class AuthController : ControllerBase
     {
         //dodać lazy loading tutaj
         private IRegisterCommandHandler _userCommandHandler { get; set; }
         private ILoginCommandHandler _loginCommandHandler { get; set; }
         private IAuthService _authService { get; set; }
 
-        public UsersController()
+        public AuthController()
         {
             _userCommandHandler = new RegisterCommandHandler();
             _loginCommandHandler = new LoginCommandHandler();
