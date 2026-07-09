@@ -11,6 +11,7 @@ namespace SearchService.BooksByUserSearches
     public class BooksOwnedByUserSearchService : IBooksOwnedByUserSearchService
     {
         private BooksOwnedByUserRepository _booksOwnedByUserRepository;
+
         public BooksOwnedByUserSearchService()
         {
             _booksOwnedByUserRepository = new BooksOwnedByUserRepository();
