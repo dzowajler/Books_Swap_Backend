@@ -23,13 +23,11 @@ namespace Books_Swap_Backend.Controllers
         }
 
         [HttpGet("/books")]
-        public async Task<ApiResponse> GetAllBooksAsync(CancellationToken cancellationToken)
-        
+        public async Task<ApiResponse> GetAllBooksAsync(CancellationToken cancellationToken)        
         {
             return await _bookQueryService.SearchForBooksAsync(null, null, null, cancellationToken);
         }
 
-        [Authorize]
         [HttpGet("/books/{id:int:min(1)}")]
         public async Task<ApiResponse> GetBookByIdAsync(int id, CancellationToken cancellationToken)
         {
