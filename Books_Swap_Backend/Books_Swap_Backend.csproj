@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommandService\CommandService.csproj" />
     <ProjectReference Include="..\DbAccess\DbAccess.csproj" />
     <ProjectReference Include="..\DbConnection\DbConnection.csproj" />
     <ProjectReference Include="..\SearchService\SearchService.csproj" />
