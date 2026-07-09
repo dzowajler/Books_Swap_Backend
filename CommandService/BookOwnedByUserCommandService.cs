@@ -1,5 +1,6 @@
 ﻿using DbAccess.CommandHandlers.BookOwnerCommandsHandlers;
 using DbAccess.Commands;
+using Microsoft.IdentityModel.Tokens;
 using Models.ApiResponseModels;
 using ResponseModels.ViewModels;
 using System;
@@ -37,7 +38,7 @@ namespace CommandService
 
             var validationResult = _bookValidatorService.ValidateBook(bookViewModel);
 
-            if (validationResult != null) 
+            if (!validationResult.IsNullOrEmpty()) 
             {
                 return new ApiError()
                 {
@@ -64,7 +65,11 @@ namespace CommandService
 
             var result = await _createBookForUserCommandHandler.HandleAsync(createBookCommand);
 
-            return new ApiSucces() { };
+
+            return new ApiSucces()
+            { 
+                Code = "201", Message = "Rescource Created"
+            };
         }
     }
 }
