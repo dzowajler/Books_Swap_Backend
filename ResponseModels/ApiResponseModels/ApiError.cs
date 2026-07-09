@@ -9,6 +9,6 @@ namespace Models.ApiResponseModels
 {
     public class ApiError : ApiResponse
     {
-        IEnumerable<ProblemDetails>? Details = null;
+        public IEnumerable<ProblemDetails> Details { get; set; }
     }
 }
