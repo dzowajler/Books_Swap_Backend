@@ -15,13 +15,11 @@ namespace Books_Swap_Backend.Controllers
     public class AuthController : ControllerBase
     {
         private Lazy<IRegisterCommandHandler> _userCommandHandler { get; set; }
-        private Lazy<ILoginCommandHandler> _loginCommandHandler { get; set; }
         private Lazy<IAuthService> _authService { get; set; }
 
         public AuthController()
         {
             _userCommandHandler = new Lazy<IRegisterCommandHandler>(() => new RegisterCommandHandler());
-            _loginCommandHandler = new Lazy<ILoginCommandHandler>(() => new LoginCommandHandler());
             _authService = new Lazy<IAuthService>(() => new AuthenticationService());
         }
 
