@@ -12,13 +12,17 @@ namespace Books_Swap_Backend.Controllers
     [ApiController]
     public class BooksOwnedByUserController : ControllerBase
     {
-        private IBooksOwnedByUserSearchService _booksOwnedByUserSearch { get; set; }
-        private IBookOwnedByUserCommandService _bookOwnedByUserCommandService { get; set; }
+        private Lazy<IBooksOwnedByUserSearchService> _booksOwnedByUserSearch { get; set; }
+        private Lazy<IBookOwnedByUserCommandService> _bookOwnedByUserCommandService { get; set; }
 
         public BooksOwnedByUserController()
         {
-            _booksOwnedByUserSearch = new BooksOwnedByUserSearchService();
-            _bookOwnedByUserCommandService = new BookOwnedByUserCommandService();
+            _booksOwnedByUserSearch = new Lazy<IBooksOwnedByUserSearchService>(
+                () => new BooksOwnedByUserSearchService()
+                );
+            _bookOwnedByUserCommandService = new Lazy<IBookOwnedByUserCommandService>(
+                () => new BookOwnedByUserCommandService()
+                );
         }
 
         [Authorize]
@@ -32,14 +36,14 @@ namespace Books_Swap_Backend.Controllers
         [HttpGet("/users/{userId:int:min(1)}/books")]
         public async Task<ApiResponse> GetAllBooksForSpecificUser(int userId, CancellationToken cancellationToken)
         {
-            return await _booksOwnedByUserSearch.GeAlltBooksByUserIdAsync(userId, cancellationToken);
+            return await _booksOwnedByUserSearch.Value.GeAlltBooksByUserIdAsync(userId, cancellationToken);
         }
 
         [Authorize]
         [HttpPost("/users/{userId:int:min(1)}/books")]
         public async Task<ApiResponse> CreateBookForSpecificUser(int userId, [FromBody]BookViewModel bookViewModel, CancellationToken cancellationToken)
         {
-            return await _bookOwnedByUserCommandService.CreateBookForUserAsync(userId, bookViewModel, cancellationToken);
+            return await _bookOwnedByUserCommandService.Value.CreateBookForUserAsync(userId, bookViewModel, cancellationToken);
         }
     }
 }

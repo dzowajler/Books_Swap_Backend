@@ -14,28 +14,27 @@ namespace Books_Swap_Backend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        //dodać lazy loading tutaj
-        private IRegisterCommandHandler _userCommandHandler { get; set; }
-        private ILoginCommandHandler _loginCommandHandler { get; set; }
-        private IAuthService _authService { get; set; }
+        private Lazy<IRegisterCommandHandler> _userCommandHandler { get; set; }
+        private Lazy<ILoginCommandHandler> _loginCommandHandler { get; set; }
+        private Lazy<IAuthService> _authService { get; set; }
 
         public AuthController()
         {
-            _userCommandHandler = new RegisterCommandHandler();
-            _loginCommandHandler = new LoginCommandHandler();
-            _authService = new MyAuthenticationService();
+            _userCommandHandler = new Lazy<IRegisterCommandHandler>(() => new RegisterCommandHandler());
+            _loginCommandHandler = new Lazy<ILoginCommandHandler>(() => new LoginCommandHandler());
+            _authService = new Lazy<IAuthService>(() => new AuthenticationService());
         }
 
         [HttpPost("/register")]
         public async Task<bool> RegisterAsync([FromBody] CreateUserCommand userCommand)
         {
-            return await _userCommandHandler.HandleAsync(userCommand);
+            return await _userCommandHandler.Value.HandleAsync(userCommand);
         }
 
         [HttpPost("/login")]
         public async Task<ApiResponse> LoginAsync([FromBody] LoginUserCommand userCommand)
         {
-            return await _authService.LogInAsync(userCommand);
+            return await _authService.Value.LogInAsync(userCommand);
         }
     }
 }
