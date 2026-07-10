@@ -1,9 +1,7 @@
 ﻿using AuthService;
-using DbAccess.CommandHandlers;
 using DbAccess.CommandHandlers.AuthCommandHandlers;
 using DbAccess.Commands;
 using DbConnection.DbModels;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Models.ApiResponseModels;
@@ -14,14 +12,14 @@ using System.Text;
 
 namespace TokenProvider
 {
-    public class MyAuthenticationService : IAuthService
+    public class AuthenticationService : IAuthService
     {
         private IRegisterCommandHandler _registerCommandHandler { get; set; }
         private ILoginCommandHandler _loginCommandHandler { get; set; }
 
         private readonly IConfiguration _configuration;
 
-        public MyAuthenticationService() 
+        public AuthenticationService() 
         {
             _registerCommandHandler = new RegisterCommandHandler();
             _loginCommandHandler = new LoginCommandHandler();
