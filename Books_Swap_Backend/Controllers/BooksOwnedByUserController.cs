@@ -18,11 +18,9 @@ namespace Books_Swap_Backend.Controllers
         public BooksOwnedByUserController()
         {
             _booksOwnedByUserSearch = new Lazy<IBooksOwnedByUserSearchService>(
-                () => new BooksOwnedByUserSearchService()
-                );
+                () => new BooksOwnedByUserSearchService());
             _bookOwnedByUserCommandService = new Lazy<IBookOwnedByUserCommandService>(
-                () => new BookOwnedByUserCommandService()
-                );
+                () => new BookOwnedByUserCommandService());
         }
 
         [Authorize]
