@@ -18,7 +18,7 @@ namespace ResponseModels.Mappers
                 Title = book.Title,
                 Author = book.Author,
                 Description = book.Description,
-                Price = book.Price,
+                //Price = book.Price,
             };
         }
     }
