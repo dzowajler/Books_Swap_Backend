@@ -3,6 +3,7 @@ using DbConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbConnection.Migrations
 {
     [DbContext(typeof(BooksSwapDbContext))]
-    partial class BooksSwapContextModelSnapshot : ModelSnapshot
+    [Migration("20260913175123_AddBookPhotoPathFieldToBookModel")]
+    partial class AddBookPhotoPathFieldToBookModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
