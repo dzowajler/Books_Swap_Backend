@@ -60,7 +60,8 @@ namespace DbAccess.QueryHandlers
                         Author = book.Author,
                         Genre = genreDbText,
                         Description = book.Description,
-                        Price = book.Price,
+                        Price = book.Price.ToString(),
+                        PhotoPath = book.BookPhotoPath,
                         Title = book.Title,
                         Id = book.BookId
                     });
