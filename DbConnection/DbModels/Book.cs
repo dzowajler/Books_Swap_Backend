@@ -28,6 +28,8 @@ namespace DbConnection.DbModels
         [Required] 
         public decimal Price { get; set; }
 
+        public string BookPhotoPath { get; set; } 
+
         public int BookGenreId { get; set; }
 
         [ForeignKey("BookGenreId")]
