@@ -60,7 +60,7 @@ namespace CommandService
                 Description = bookViewModel.Description,
                 Author = bookViewModel.Author,
                 Genre = bookViewModel.Genre,
-                Price = bookViewModel.Price,
+                //Price = bookViewModel.Price,
             };
 
             var result = await _createBookForUserCommandHandler.HandleAsync(createBookCommand);
