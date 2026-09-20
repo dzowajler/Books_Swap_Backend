@@ -14,14 +14,12 @@ namespace TokenProvider
 {
     public class AuthenticationService : IAuthService
     {
-        private IRegisterCommandHandler _registerCommandHandler { get; set; }
         private ILoginCommandHandler _loginCommandHandler { get; set; }
 
         private readonly IConfiguration _configuration;
 
         public AuthenticationService() 
         {
-            _registerCommandHandler = new RegisterCommandHandler();
             _loginCommandHandler = new LoginCommandHandler();
             _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
         }
