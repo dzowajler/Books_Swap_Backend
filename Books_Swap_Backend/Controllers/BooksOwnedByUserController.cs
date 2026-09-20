@@ -32,7 +32,7 @@ namespace Books_Swap_Backend.Controllers
             return await Task.Run(() => { return new ApiSucces(); });
         }
 
-        [Authorize]
+       
         [HttpGet("/users/{userId:int:min(1)}/books")]
         public async Task<ApiResponse> GetAllBooksForSpecificUser(int userId, CancellationToken cancellationToken)
         {
@@ -44,6 +44,13 @@ namespace Books_Swap_Backend.Controllers
         public async Task<ApiResponse> CreateBookForSpecificUser(int userId, [FromBody]BookViewModel bookViewModel, CancellationToken cancellationToken)
         {
             return await _bookOwnedByUserCommandService.Value.CreateBookForUserAsync(userId, bookViewModel, cancellationToken);
+        }
+
+       
+        [HttpPut("/users/{userId:int:min(1)}/books/{bookId:int:min(1)}")]
+        public async Task<ApiResponse> UpdateBookForSpecificUser(int userId, int bookId, [FromBody]BookViewModel bookViewModel, CancellationToken cancellationToken)
+        {
+            return await Task.FromResult(new ApiSucces());
         }
     }
 }
