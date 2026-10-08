@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbAccess.Commands
+namespace DbAccess.Commands.UserCommands
 {
     public class CreateUserCommand
     {

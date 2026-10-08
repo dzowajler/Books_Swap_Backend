@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbAccess.Commands
+namespace DbAccess.Commands.BookCommands
 {
     public class CreateBookCommand
     {
@@ -14,5 +14,6 @@ namespace DbAccess.Commands
         public string Author { get; set; }
         public decimal Price { get; set; }
         public string Genre { get; set; }
+        public string PhotoPath { get; set; } = "kotki.jpg";
     }
 }
