@@ -1,4 +1,4 @@
-﻿using DbAccess.Commands;
+﻿using DbAccess.Commands.UserCommands;
 using DbAccess.Queries;
 using DbConnection;
 using DbConnection.DbModels;

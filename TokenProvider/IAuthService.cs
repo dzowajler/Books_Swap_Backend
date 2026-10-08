@@ -1,4 +1,4 @@
-﻿using DbAccess.Commands;
+﻿using DbAccess.Commands.UserCommands;
 using Models.ApiResponseModels;
 using Models.Models;
 using System;

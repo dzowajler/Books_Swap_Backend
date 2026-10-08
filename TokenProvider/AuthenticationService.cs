@@ -1,6 +1,6 @@
 ﻿using AuthService;
 using DbAccess.CommandHandlers.AuthCommandHandlers;
-using DbAccess.Commands;
+using DbAccess.Commands.UserCommands;
 using DbConnection.DbModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
