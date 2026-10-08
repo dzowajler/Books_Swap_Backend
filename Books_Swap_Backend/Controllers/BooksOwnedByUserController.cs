@@ -15,13 +15,13 @@ namespace Books_Swap_Backend.Controllers
         private Lazy<IBooksOwnedByUserSearchService> _booksOwnedByUserSearch { get; set; }
         private Lazy<IBookOwnedByUserCommandService> _bookOwnedByUserCommandService { get; set; }
 
-        public BooksOwnedByUserController()
+        public BooksOwnedByUserController(IBooksOwnedByUserSearchService booksOwnedByUserSearchService, IBookOwnedByUserCommandService bookOwnedByUserCommandService)
         {
             _booksOwnedByUserSearch = new Lazy<IBooksOwnedByUserSearchService>(
-                () => new BooksOwnedByUserSearchService()
+                () => booksOwnedByUserSearchService
                 );
             _bookOwnedByUserCommandService = new Lazy<IBookOwnedByUserCommandService>(
-                () => new BookOwnedByUserCommandService()
+                () => bookOwnedByUserCommandService
                 );
         }
 
@@ -46,11 +46,19 @@ namespace Books_Swap_Backend.Controllers
             return await _bookOwnedByUserCommandService.Value.CreateBookForUserAsync(userId, bookViewModel, cancellationToken);
         }
 
-       
         [HttpPut("/users/{userId:int:min(1)}/books/{bookId:int:min(1)}")]
         public async Task<ApiResponse> UpdateBookForSpecificUser(int userId, int bookId, [FromBody]BookViewModel bookViewModel, CancellationToken cancellationToken)
         {
-            return await Task.FromResult(new ApiSucces());
+            return await _bookOwnedByUserCommandService.Value.UpdateBookForUserAsync(userId, bookViewModel, cancellationToken);
+        }
+
+        [RequestFormLimits(MultipartBodyLengthLimit = 10485760)] // e.g., 10MB
+        [RequestSizeLimit(10485760)]
+        [DisableRequestSizeLimit]
+        [HttpPost("/sendFile")]
+        public async Task<ApiResponse> UpdatePhotoFile(IFormFile myFile)
+        {
+            return null;
         }
     }
 }
