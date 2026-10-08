@@ -1,8 +1,12 @@
+using CommandService;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SearchService.BooksByUserSearches;
+using SearchService.BooksSearches;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -65,6 +69,17 @@ builder.Services.AddSwaggerGen(setup =>
 
 });
 
+builder.Services.AddTransient<IBooksSearchService, BooksSearchService>();
+builder.Services.AddTransient<IBooksOwnedByUserSearchService, BooksOwnedByUserSearchService>();
+builder.Services.AddTransient<IBookOwnedByUserCommandService, BookOwnedByUserCommandService>();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = 10485760; // Limit on individual form values
+    options.MultipartBodyLengthLimit = 10485760; // Limit on form body size
+    options.MemoryBufferThreshold = 10485760; // Buffering limit
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,7 +95,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod());
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200",
+    "http://192.168.1.229:4200").AllowAnyHeader().AllowAnyMethod());
 
 app.MapControllers();
 
