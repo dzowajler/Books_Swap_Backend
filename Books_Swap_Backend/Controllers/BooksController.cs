@@ -17,9 +17,9 @@ namespace Books_Swap_Backend.Controllers
     {
         private readonly IBooksSearchService _bookQueryService; 
 
-        public BooksController(ILogger<BooksController> logger)
+        public BooksController(IBooksSearchService bookQueryService)
         {
-            _bookQueryService = new BooksSearchService();
+            _bookQueryService = bookQueryService;
         }
 
         [HttpGet("/books")]
