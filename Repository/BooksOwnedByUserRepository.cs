@@ -31,9 +31,7 @@ namespace Repository
             var books = new List<Book>();
 
             foreach(var bookId in booksIdsTakenByUserId)
-            {
                 books.Add(_dbContext.Books.Where(b => b.BookId == bookId).Single());
-            }
 
             return books;
         }
