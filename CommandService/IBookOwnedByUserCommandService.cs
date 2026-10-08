@@ -11,5 +11,6 @@ namespace CommandService
     public interface IBookOwnedByUserCommandService
     {
         Task<ApiResponse> CreateBookForUserAsync(int userId, BookViewModel bookViewModel, CancellationToken cancellationToken);
+        Task<ApiResponse> UpdateBookForUserAsync(int userId, BookViewModel bookViewModel, CancellationToken cancellationToken);
     }
 }
