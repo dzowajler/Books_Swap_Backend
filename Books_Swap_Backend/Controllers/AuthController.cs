@@ -1,7 +1,7 @@
 ﻿using AuthService;
 using DbAccess.CommandHandlers;
 using DbAccess.CommandHandlers.AuthCommandHandlers;
-using DbAccess.Commands;
+using DbAccess.Commands.UserCommands;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiResponseModels;
 using Models.Models;
