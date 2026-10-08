@@ -1,4 +1,4 @@
-﻿using DbAccess.Commands;
+﻿using DbAccess.Commands.BookCommands;
 using DbConnection;
 using DbConnection.DbModels;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DbAccess.CommandHandlers.BookOwnerCommandsHandlers
+namespace DbAccess.CommandHandlers.BookOwnerCommandsHandlers.CreateBookHandler
 {
     public class CreateBookForUserCommandHandler : ICreateBookForUserCommandHandler
     {
@@ -21,13 +21,9 @@ namespace DbAccess.CommandHandlers.BookOwnerCommandsHandlers
         public async Task<bool> HandleAsync(CreateBookCommand bookCommand)
         {
             if (bookCommand == null)
-            {
                 throw new ArgumentNullException(nameof(bookCommand));
-            }
 
-            var result = await CreateBookForUserCommandAsync(bookCommand);
-
-            return result;
+            return await CreateBookForUserCommandAsync(bookCommand);
         }
 
         private async Task<bool> CreateBookForUserCommandAsync(CreateBookCommand createBookCommand)
@@ -35,31 +31,34 @@ namespace DbAccess.CommandHandlers.BookOwnerCommandsHandlers
             try
             {
                 var user = await _booksSwapDbContext.Users.FindAsync(createBookCommand.UserId);
-                //edge case: sprawdzić czy o podanym Id istenieje użytkownik
-                // w bazie - jesli tak - przejdź do tworzenia książki, jeśli nie, 
-                // zwróć kod 500 - nie ma takiego użytkownika w bazie
 
-                //napisac walidatory
-                //napisac customExceptions
-
-                if(user != null) { 
-
+                if (user != null)
+                { 
                     var createdBookId = await CreateBookInDatabaseAsync(createBookCommand);
 
                     if (createdBookId.HasValue)
-                    {
-                        _booksSwapDbContext.BookOwners.Add(new BookOwners()
-                        {
-                            BookId = createdBookId.Value,
-                        });
-                    }
+                        await AttachCreatedBookToUser(createdBookId, createBookCommand.UserId);  
+
+                    return true;
                 }
-                return true;
+
+                else return false;
             }
             catch (Exception ex)
             {
                 return false; 
             }
+        }
+
+        private async Task AttachCreatedBookToUser(int? createdBookId, int userId)
+        {
+            _booksSwapDbContext.BookOwners.Add(new BookOwners()
+            {
+                BookId = createdBookId.Value,
+                UserId = userId,
+            });
+
+            await _booksSwapDbContext.SaveChangesAsync();
         }
 
         private async Task<int?> CreateBookInDatabaseAsync(CreateBookCommand createBookCommand)
@@ -73,7 +72,8 @@ namespace DbAccess.CommandHandlers.BookOwnerCommandsHandlers
                     Description = createBookCommand.Description,
                     Author = createBookCommand.Author,
                     Price = createBookCommand.Price,
-                    BookGenreId = 1
+                    BookGenreId = 1,
+                    BookPhotoPath = createBookCommand.PhotoPath,
                 };
 
                 var item = await _booksSwapDbContext.Books.AddAsync(bookInsertedIntoDb); 
